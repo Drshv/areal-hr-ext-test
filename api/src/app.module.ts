@@ -8,6 +8,7 @@ import { DepartmentsModule } from './departments/departments.module';
 import { PositionsModule } from './positions/positions.module';
 import { EmployeesModule } from './employees/employees.module';
 import { FilesModule } from './files/files.module';
+import { HrOperationsModule } from './hr_operations/hr_operations.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { FilesModule } from './files/files.module';
     PositionsModule,
     EmployeesModule,
     FilesModule,
+    HrOperationsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
