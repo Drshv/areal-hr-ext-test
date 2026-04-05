@@ -9,6 +9,7 @@ import { PositionsModule } from './positions/positions.module';
 import { EmployeesModule } from './employees/employees.module';
 import { FilesModule } from './files/files.module';
 import { HrOperationsModule } from './hr_operations/hr_operations.module';
+import { OperationHistoryModule } from './operation_history/operation_history.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { HrOperationsModule } from './hr_operations/hr_operations.module';
     EmployeesModule,
     FilesModule,
     HrOperationsModule,
+    OperationHistoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
