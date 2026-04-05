@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { OrganizationsModule } from './organizations/organizations.module';
 import { DepartmentsModule } from './departments/departments.module';
 import { PositionsModule } from './positions/positions.module';
+import { EmployeesModule } from './employees/employees.module';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { PositionsModule } from './positions/positions.module';
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: false,
+        synchronize: true,
         logging: true,
       }),
       inject: [ConfigService],
@@ -31,6 +32,7 @@ import { PositionsModule } from './positions/positions.module';
     OrganizationsModule,
     DepartmentsModule,
     PositionsModule,
+    EmployeesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
