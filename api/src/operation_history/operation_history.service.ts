@@ -35,6 +35,6 @@ export class OperationHistoryService {
   }
 
   async remove(id: string) {
-    return this.operationHistoryRepository.delete(id); // пока оставляем delete
-  }
+  return this.operationHistoryRepository.softDelete(id);
+ }
 }
