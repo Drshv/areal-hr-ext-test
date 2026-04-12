@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Position } from './entities/position.entity';
@@ -22,7 +22,11 @@ export class PositionsService {
   }
 
   async findOne(id: string) {
-    return this.positionsRepository.findOne({ where: { id } });
+    const position = await this.positionsRepository.findOne({ where: { id } });
+    if (!position) {
+      throw new NotFoundException(`Position with id ${id} not found`);
+    }
+    return position;
   }
 
   async update(id: string, updatePositionDto: UpdatePositionDto) {

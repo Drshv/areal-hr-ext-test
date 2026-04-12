@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Organization } from './entities/organization.entity';
@@ -22,7 +22,11 @@ export class OrganizationsService {
   }
 
   async findOne(id: string) {
-    return this.organizationsRepository.findOne({ where: { id } });
+    const organization = await this.organizationsRepository.findOne({ where: { id } });
+    if (!organization) {
+      throw new NotFoundException(`Organization with id ${id} not found`);
+    }
+    return organization;
   }
 
   async update(id: string, updateOrganizationDto: UpdateOrganizationDto) {

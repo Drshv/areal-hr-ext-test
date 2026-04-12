@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { OperationHistory } from './entities/operation_history.entity';
@@ -22,7 +22,11 @@ export class OperationHistoryService {
   }
 
   async findOne(id: string) {
-    return this.operationHistoryRepository.findOne({ where: { id } });
+    const record = await this.operationHistoryRepository.findOne({ where: { id } });
+    if (!record) {
+      throw new NotFoundException(`Operation history record with id ${id} not found`);
+    }
+    return record;
   }
 
   async update(id: string, updateOperationHistoryDto: UpdateOperationHistoryDto) {
@@ -31,6 +35,6 @@ export class OperationHistoryService {
   }
 
   async remove(id: string) {
-    return this.operationHistoryRepository.delete(id);
+    return this.operationHistoryRepository.delete(id); // пока оставляем delete
   }
 }
