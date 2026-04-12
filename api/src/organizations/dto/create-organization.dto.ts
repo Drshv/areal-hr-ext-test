@@ -1,1 +1,10 @@
-export class CreateOrganizationDto {}
+import { IsString, IsOptional } from 'class-validator';
+
+export class CreateOrganizationDto {
+  @IsString()
+  name: string;
+
+  @IsOptional()
+  @IsString()
+  comment?: string;
+}
