@@ -18,11 +18,16 @@ export class HrOperationsService {
   }
 
   async findAll() {
-    return this.hrOperationsRepository.find();
+    return this.hrOperationsRepository.find({
+      relations: ['employee', 'department', 'position'],
+    });
   }
 
   async findOne(id: string) {
-    const operation = await this.hrOperationsRepository.findOne({ where: { id } });
+    const operation = await this.hrOperationsRepository.findOne({
+      where: { id },
+      relations: ['employee', 'department', 'position'],
+    });
     if (!operation) {
       throw new NotFoundException(`HR operation with id ${id} not found`);
     }
