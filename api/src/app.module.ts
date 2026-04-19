@@ -11,6 +11,7 @@ import { FilesModule } from './files/files.module';
 import { HrOperationsModule } from './hr_operations/hr_operations.module';
 import { OperationHistoryModule } from './operation_history/operation_history.module';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { UsersModule } from './users/users.module';
     HrOperationsModule,
     OperationHistoryModule,
     UsersModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
