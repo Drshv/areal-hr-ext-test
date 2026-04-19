@@ -10,6 +10,7 @@ import { EmployeesModule } from './employees/employees.module';
 import { FilesModule } from './files/files.module';
 import { HrOperationsModule } from './hr_operations/hr_operations.module';
 import { OperationHistoryModule } from './operation_history/operation_history.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -22,12 +23,12 @@ import { OperationHistoryModule } from './operation_history/operation_history.mo
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
         host: configService.get('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
+        port: configService.get('DB_PORT'),
         username: configService.get('DB_USER'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
-        synchronize: false,
+        synchronize: true,
         logging: true,
       }),
       inject: [ConfigService],
@@ -39,6 +40,7 @@ import { OperationHistoryModule } from './operation_history/operation_history.mo
     FilesModule,
     HrOperationsModule,
     OperationHistoryModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
