@@ -11,6 +11,7 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
       // позже добавим другие страницы
+      { path: 'employees', component: () => import('pages/EmployeesPage.vue') },
     ],
   },
 ];
