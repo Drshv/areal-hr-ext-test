@@ -1,9 +1,11 @@
-import { IsString, IsUUID, IsOptional } from 'class-validator';
+import { IsString, IsUUID, IsOptional, IsNotEmpty } from 'class-validator';
 
 export class CreateUserDto {
+  @IsNotEmpty()
   @IsString()
   last_name: string;
 
+  @IsNotEmpty()
   @IsString()
   first_name: string;
 
@@ -11,9 +13,11 @@ export class CreateUserDto {
   @IsString()
   middle_name?: string;
 
+  @IsNotEmpty()
   @IsString()
   login: string;
 
+  @IsNotEmpty()
   @IsString()
   password: string;
 

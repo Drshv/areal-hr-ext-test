@@ -1,6 +1,7 @@
-import { IsString, IsUUID, IsOptional } from 'class-validator';
+import { IsString, IsUUID, IsOptional, IsNotEmpty } from 'class-validator';
 
 export class CreateDepartmentDto {
+  @IsNotEmpty()
   @IsUUID()
   organization_id: string;
 
@@ -8,6 +9,7 @@ export class CreateDepartmentDto {
   @IsUUID()
   parent_id?: string;
 
+  @IsNotEmpty()
   @IsString()
   name: string;
 

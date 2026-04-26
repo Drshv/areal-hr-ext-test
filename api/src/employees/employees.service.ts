@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { Employee } from './entities/employee.entity';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -17,8 +17,21 @@ export class EmployeesService {
     return this.employeesRepository.save(employee);
   }
 
-  async findAll() {
-    return this.employeesRepository.find();
+  async findAll(query: any) {
+    const { last_name, first_name, department_id, page = 1, limit = 10 } = query;
+    const where: any = {};
+
+    if (last_name) where.last_name = Like(`%${last_name}%`);
+    if (first_name) where.first_name = Like(`%${first_name}%`);
+    if (department_id) where.department_id = department_id;
+
+    const [data, total] = await this.employeesRepository.findAndCount({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return { data, total, page, limit };
   }
 
   async findOne(id: string) {

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { HrOperationsService } from './hr_operations.service';
 import { CreateHrOperationDto } from './dto/create-hr_operation.dto';
 import { UpdateHrOperationDto } from './dto/update-hr_operation.dto';
@@ -13,8 +13,8 @@ export class HrOperationsController {
   }
 
   @Get()
-  findAll() {
-    return this.hrOperationsService.findAll();
+  findAll(@Query() query: any) {
+    return this.hrOperationsService.findAll(query);
   }
 
   @Get(':id')

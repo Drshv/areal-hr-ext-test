@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { Position } from './entities/position.entity';
 import { CreatePositionDto } from './dto/create-position.dto';
 import { UpdatePositionDto } from './dto/update-position.dto';
@@ -17,8 +17,20 @@ export class PositionsService {
     return this.positionsRepository.save(position);
   }
 
-  async findAll() {
-    return this.positionsRepository.find();
+  async findAll(query: any) {
+    const { organization_id, name, page = 1, limit = 10 } = query;
+    const where: any = {};
+
+    if (organization_id) where.organization_id = organization_id;
+    if (name) where.name = Like(`%${name}%`);
+
+    const [data, total] = await this.positionsRepository.findAndCount({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return { data, total, page, limit };
   }
 
   async findOne(id: string) {

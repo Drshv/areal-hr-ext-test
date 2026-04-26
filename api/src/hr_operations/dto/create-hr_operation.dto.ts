@@ -1,12 +1,15 @@
-import { IsString, IsUUID, IsDateString, IsOptional, IsNumber, IsPositive } from 'class-validator';
+import { IsString, IsUUID, IsDateString, IsOptional, IsNumber, IsPositive, IsNotEmpty } from 'class-validator';
 
 export class CreateHrOperationDto {
+  @IsNotEmpty()
   @IsUUID()
   employee_id: string;
 
+  @IsNotEmpty()
   @IsString()
   operation_type: string;
 
+  @IsNotEmpty()
   @IsDateString()
   operation_date: string;
 

@@ -1,9 +1,11 @@
-import { IsString, IsOptional, IsDateString, IsUUID } from 'class-validator';
+import { IsString, IsOptional, IsDateString, IsNotEmpty } from 'class-validator';
 
 export class CreateEmployeeDto {
+  @IsNotEmpty()
   @IsString()
   last_name: string;
 
+  @IsNotEmpty()
   @IsString()
   first_name: string;
 
@@ -11,15 +13,19 @@ export class CreateEmployeeDto {
   @IsString()
   middle_name?: string;
 
+  @IsNotEmpty()
   @IsDateString()
   birth_date: string;
 
+  @IsNotEmpty()
   @IsString()
   passport_series: string;
 
+  @IsNotEmpty()
   @IsString()
   passport_number: string;
 
+  @IsNotEmpty()
   @IsDateString()
   passport_issue_date: string;
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { OperationHistoryService } from './operation_history.service';
 import { CreateOperationHistoryDto } from './dto/create-operation_history.dto';
 import { UpdateOperationHistoryDto } from './dto/update-operation_history.dto';
@@ -13,8 +13,8 @@ export class OperationHistoryController {
   }
 
   @Get()
-  findAll() {
-    return this.operationHistoryService.findAll();
+  findAll(@Query() query: any) {
+    return this.operationHistoryService.findAll(query);
   }
 
   @Get(':id')

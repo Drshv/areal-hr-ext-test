@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { File } from './entities/file.entity';
 import { CreateFileDto } from './dto/create-file.dto';
 import { UpdateFileDto } from './dto/update-file.dto';
@@ -17,8 +17,20 @@ export class FilesService {
     return this.filesRepository.save(file);
   }
 
-  async findAll() {
-    return this.filesRepository.find();
+  async findAll(query: any) {
+    const { employee_id, name, page = 1, limit = 10 } = query;
+    const where: any = {};
+
+    if (employee_id) where.employee_id = employee_id;
+    if (name) where.name = Like(`%${name}%`);
+
+    const [data, total] = await this.filesRepository.findAndCount({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return { data, total, page, limit };
   }
 
   async findOne(id: string) {

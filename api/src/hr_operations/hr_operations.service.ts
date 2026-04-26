@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { HrOperation } from './entities/hr_operation.entity';
 import { CreateHrOperationDto } from './dto/create-hr_operation.dto';
 import { UpdateHrOperationDto } from './dto/update-hr_operation.dto';
@@ -17,17 +17,24 @@ export class HrOperationsService {
     return this.hrOperationsRepository.save(operation);
   }
 
-  async findAll() {
-    return this.hrOperationsRepository.find({
-      relations: ['employee', 'department', 'position'],
+  async findAll(query: any) {
+    const { employee_id, operation_type, page = 1, limit = 10 } = query;
+    const where: any = {};
+
+    if (employee_id) where.employee_id = employee_id;
+    if (operation_type) where.operation_type = Like(`%${operation_type}%`);
+
+    const [data, total] = await this.hrOperationsRepository.findAndCount({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
     });
+
+    return { data, total, page, limit };
   }
 
   async findOne(id: string) {
-    const operation = await this.hrOperationsRepository.findOne({
-      where: { id },
-      relations: ['employee', 'department', 'position'],
-    });
+    const operation = await this.hrOperationsRepository.findOne({ where: { id } });
     if (!operation) {
       throw new NotFoundException(`HR operation with id ${id} not found`);
     }

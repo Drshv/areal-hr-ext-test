@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -33,8 +33,20 @@ export class UsersService {
     return this.usersRepository.save(user);
   }
 
-  async findAll() {
-    return this.usersRepository.find();
+  async findAll(query: any) {
+    const { login, last_name, page = 1, limit = 10 } = query;
+    const where: any = {};
+
+    if (login) where.login = Like(`%${login}%`);
+    if (last_name) where.last_name = Like(`%${last_name}%`);
+
+    const [data, total] = await this.usersRepository.findAndCount({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return { data, total, page, limit };
   }
 
   async findOne(id: string) {

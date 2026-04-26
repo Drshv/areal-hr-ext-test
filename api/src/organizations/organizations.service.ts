@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, Like } from 'typeorm';
 import { Organization } from './entities/organization.entity';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
@@ -17,8 +17,19 @@ export class OrganizationsService {
     return this.organizationsRepository.save(organization);
   }
 
-  async findAll() {
-    return this.organizationsRepository.find();
+  async findAll(query: any) {
+    const { name, page = 1, limit = 10 } = query;
+    const where: any = {};
+
+    if (name) where.name = Like(`%${name}%`);
+
+    const [data, total] = await this.organizationsRepository.findAndCount({
+      where,
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    return { data, total, page, limit };
   }
 
   async findOne(id: string) {
