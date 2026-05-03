@@ -69,6 +69,16 @@
             <q-input v-model="editForm.registration_house" label="Дом" />
             <q-input v-model="editForm.registration_building" label="Корпус" />
             <q-input v-model="editForm.registration_apartment" label="Квартира" />
+            <q-select
+              v-model="editForm.department_id"
+              :options="departments"
+              label="Отдел"
+              option-value="id"
+              option-label="name"
+              emit-value
+              map-options
+              clearable
+            />
 
             <div class="row q-mt-md">
               <q-btn type="submit" label="Сохранить" color="primary" class="q-mr-md" />
@@ -103,6 +113,7 @@ import { useAuthStore } from 'src/stores/auth';
 const authStore = useAuthStore();
 
 const employees = ref([]);
+const departments = ref([]);
 const loading = ref(false);
 const editDialog = ref(false);
 const deleteDialog = ref(false);
@@ -125,6 +136,7 @@ const columns = [
   { name: 'birth_date', label: 'Дата рождения', field: 'birth_date' },
   { name: 'passport_series', label: 'Серия', field: 'passport_series' },
   { name: 'passport_number', label: 'Номер', field: 'passport_number' },
+  { name: 'department', label: 'Отдел', field: (row) => row.department?.name || '-' },
   { name: 'actions', label: 'Действия', field: 'actions', align: 'center' },
 ];
 
@@ -145,6 +157,7 @@ const editForm = reactive({
   registration_house: '',
   registration_building: '',
   registration_apartment: '',
+  department_id: null,
 });
 
 const getHeaders = () => ({
@@ -160,6 +173,16 @@ const convertDate = (dateStr) => {
     return `${parts[2]}-${parts[1]}-${parts[0]}`;
   }
   return dateStr;
+};
+
+const loadDepartments = async () => {
+  try {
+    const response = await fetch('http://localhost:3000/api/departments', { headers: getHeaders() });
+    const data = await response.json();
+    departments.value = data.data;
+  } catch (error) {
+    console.error('Load departments error:', error);
+  }
 };
 
 const loadEmployees = async () => {
@@ -204,6 +227,7 @@ const createEmployee = () => {
   editForm.registration_house = '';
   editForm.registration_building = '';
   editForm.registration_apartment = '';
+  editForm.department_id = null;
   editDialog.value = true;
 };
 
@@ -271,6 +295,7 @@ const deleteEmployee = async () => {
 };
 
 onMounted(() => {
+  loadDepartments();
   loadEmployees();
 });
 </script>
