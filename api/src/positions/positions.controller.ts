@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { PositionsService } from './positions.service';
 import { CreatePositionDto } from './dto/create-position.dto';
 import { UpdatePositionDto } from './dto/update-position.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Controller('positions')
 export class PositionsController {
@@ -13,7 +14,7 @@ export class PositionsController {
   }
 
   @Get()
-  findAll(@Query() query: any) {
+  findAll(@Query() query: PaginationDto) {
     return this.positionsService.findAll(query);
   }
 

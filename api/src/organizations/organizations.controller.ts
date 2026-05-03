@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { OrganizationsService } from './organizations.service';
 import { CreateOrganizationDto } from './dto/create-organization.dto';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Controller('organizations')
 export class OrganizationsController {
@@ -13,7 +14,7 @@ export class OrganizationsController {
   }
 
   @Get()
-  findAll(@Query() query: any) {
+  findAll(@Query() query: PaginationDto) {
     return this.organizationsService.findAll(query);
   }
 

@@ -2,6 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { DepartmentsService } from './departments.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { PaginationDto } from '../common/dto/pagination.dto';
 
 @Controller('departments')
 export class DepartmentsController {
@@ -13,7 +14,7 @@ export class DepartmentsController {
   }
 
   @Get()
-  findAll(@Query() query: any) {
+  findAll(@Query() query: PaginationDto) {
     return this.departmentsService.findAll(query);
   }
 
