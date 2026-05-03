@@ -1,0 +1,16 @@
+import { MigrationInterface, QueryRunner } from "typeorm";
+
+export class AddDepartmentIdToEmployees1777839051105 implements MigrationInterface {
+    name = 'AddDepartmentIdToEmployees1777839051105'
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "employees" ADD "department_id" uuid`);
+        await queryRunner.query(`ALTER TABLE "employees" ADD CONSTRAINT "FK_678a3540f843823784b0fe4a4f2" FOREIGN KEY ("department_id") REFERENCES "departments"("id") ON DELETE NO ACTION ON UPDATE NO ACTION`);
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.query(`ALTER TABLE "employees" DROP CONSTRAINT "FK_678a3540f843823784b0fe4a4f2"`);
+        await queryRunner.query(`ALTER TABLE "employees" DROP COLUMN "department_id"`);
+    }
+
+}

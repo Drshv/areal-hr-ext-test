@@ -27,6 +27,7 @@ export class EmployeesService {
 
     const [data, total] = await this.employeesRepository.findAndCount({
       where,
+      relations: ['department'],
       skip: (page - 1) * limit,
       take: limit,
     });
@@ -35,7 +36,10 @@ export class EmployeesService {
   }
 
   async findOne(id: string) {
-    const employee = await this.employeesRepository.findOne({ where: { id } });
+    const employee = await this.employeesRepository.findOne({
+      where: { id },
+      relations: ['department'],
+    });
     if (!employee) {
       throw new NotFoundException(`Employee with id ${id} not found`);
     }

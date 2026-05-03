@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, DeleteDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Department } from '../../departments/entities/department.entity';
 
 @Entity('employees')
 export class Employee {
@@ -49,6 +50,13 @@ export class Employee {
 
   @Column({ type: 'varchar', length: 20, nullable: true })
   registration_apartment: string;
+
+  @Column({ type: 'uuid', nullable: true })
+  department_id: string;
+
+  @ManyToOne(() => Department)
+  @JoinColumn({ name: 'department_id' })
+  department: Department;
 
   @CreateDateColumn()
   created_at: Date;
